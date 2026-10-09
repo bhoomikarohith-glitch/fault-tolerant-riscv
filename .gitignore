@@ -1,1 +1,115 @@
+# =========================
+# General
+# =========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
 
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+
+# =========================
+# Verilator
+# =========================
+obj_dir/
+Verilated.cpp
+Verilated.h
+Verilated.mk
+verilated.d
+verilated.vcd
+*.vcd
+*.fst
+
+# =========================
+# Cocotb
+# =========================
+sim_build/
+results.xml
+coverage.xml
+htmlcov/
+
+# =========================
+# RISC-V builds
+# =========================
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+
+# =========================
+# Vivado
+# =========================
+*.jou
+*.log
+*.str
+*.pb
+*.wdb
+*.wcfg
+*.xpr
+*.runs/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.gen/
+*.Xil/
+vivado_project/
+
+# =========================
+# Yosys
+# =========================
+*.json
+*.dot
+*.blif
+*.edif
+*.sby
+*.yslog
+
+# =========================
+# OpenLane / ASIC
+# =========================
+runs/
+openlane_runs/
+*.sdc
+*.sdf
+
+# =========================
+# Temporary build files
+# =========================
+build/
+dist/
+tmp/
+temp/
+
+# =========================
+# Waveforms / simulation output
+# =========================
+*.vcd
+*.fst
+*.vpd
+*.wlf
+
+# =========================
+# Generated reports
+# =========================
+*.rpt
+*.rep
+*.dcp
+*.bit
+*.ltx
+*.bin

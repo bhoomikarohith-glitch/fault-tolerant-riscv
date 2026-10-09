@@ -109,7 +109,7 @@ The project is expected to use tools including:
 
 ## Project Status
 
-🚧 **Active Development**
+**Active Development**
 
 The architecture, verification environment, fault-tolerance mechanisms, and implementation flow are being developed incrementally.
 

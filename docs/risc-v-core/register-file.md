@@ -1,1 +1,674 @@
+# Register File Specification
 
+**Project:** Fault-Tolerant RV32I RISC-V Processor  
+**Module:** Register File  
+**File:** `rtl/core/register_file.sv`  
+**Specification:** Baseline Single-Cycle RV32I  
+**Status:** Design Specification
+
+---
+
+## 1. Purpose
+
+The Register File stores the processor's 32 general-purpose 32-bit integer registers and provides the processor with two simultaneous read ports and one write port.
+
+The module allows the processor to:
+
+- Read the values of two source registers simultaneously.
+- Write a result to one destination register.
+- Maintain the RISC-V architectural requirement that register `x0` always contains zero.
+
+The baseline implementation is designed for the RV32I processor and will later serve as the basis for the fault-tolerant register file implementation using techniques such as TMR.
+
+---
+
+## 2. Architectural Requirements
+
+The register file shall contain:
+
+- **32 registers**
+- **32-bit width per register**
+- Register addresses of **5 bits**
+- **2 independent read ports**
+- **1 synchronous write port**
+
+The register mapping is:
+
+```text
+x0  → Register 0
+x1  → Register 1
+x2  → Register 2
+...
+x31 → Register 31
+```
+
+The register file therefore contains:
+
+```text
+32 × 32-bit = 1024 bits
+```
+
+of architectural storage.
+
+---
+
+## 3. Register x0 Requirement
+
+Register `x0` is hardwired to zero according to the RISC-V specification.
+
+Therefore:
+
+```text
+x0 = 0
+```
+
+must always be true.
+
+### Read behavior
+
+If either read address is `0`:
+
+```text
+rs1 = 0 → rd1 = 0
+rs2 = 0 → rd2 = 0
+```
+
+regardless of the contents of the physical storage element associated with register 0.
+
+### Write behavior
+
+A write targeting register `x0` shall have no architectural effect.
+
+Therefore:
+
+```text
+rd = 0
+```
+
+must not modify the register file.
+
+---
+
+## 4. Interface
+
+The baseline register file shall have the following interface:
+
+| Signal | Direction | Width | Description |
+|---|---|---:|---|
+| `clk` | Input | 1 | System clock |
+| `rst` | Input | 1 | Reset |
+| `rs1` | Input | 5 | Address of first source register |
+| `rs2` | Input | 5 | Address of second source register |
+| `rd` | Input | 5 | Address of destination register |
+| `write_data` | Input | 32 | Data to be written to destination register |
+| `reg_write` | Input | 1 | Register write enable |
+| `rd1` | Output | 32 | Data read from register selected by `rs1` |
+| `rd2` | Output | 32 | Data read from register selected by `rs2` |
+
+---
+
+## 5. Port Semantics
+
+### `rs1`
+
+`rs1` is a 5-bit register address extracted from the instruction.
+
+It selects the first source register.
+
+```text
+rd1 = Register[rs1]
+```
+
+---
+
+### `rs2`
+
+`rs2` is a 5-bit register address extracted from the instruction.
+
+It selects the second source register.
+
+```text
+rd2 = Register[rs2]
+```
+
+---
+
+### `rd`
+
+`rd` is a 5-bit register address extracted from the instruction.
+
+It identifies the destination register to which `write_data` will be written.
+
+```text
+Register[rd] ← write_data
+```
+
+provided that `reg_write = 1` and `rd ≠ 0`.
+
+---
+
+### `write_data`
+
+`write_data` contains the value being written back to the register file.
+
+For the baseline single-cycle processor, this value originates from the processor's write-back selection.
+
+Depending on the instruction, `write_data` may represent:
+
+- ALU result
+- Load data
+- PC + 4
+- Immediate value for certain instructions
+
+The register file itself does not determine the source of `write_data`.
+
+---
+
+### `reg_write`
+
+`reg_write` controls whether a register write occurs.
+
+```text
+reg_write = 1 → perform write
+reg_write = 0 → do not perform write
+```
+
+A write to `x0` is suppressed regardless of `reg_write`.
+
+---
+
+### `rd1`
+
+`rd1` is the 32-bit data value stored in the register selected by `rs1`.
+
+```text
+rd1 = Register[rs1]
+```
+
+This value is typically sent to the ALU, branch comparator, or another execution unit.
+
+---
+
+### `rd2`
+
+`rd2` is the 32-bit data value stored in the register selected by `rs2`.
+
+```text
+rd2 = Register[rs2]
+```
+
+This value is typically sent to the ALU, branch comparator, or store-data path.
+
+---
+
+# 6. Read Operation
+
+The baseline register file uses **combinational reads**.
+
+The output values shall reflect the currently selected registers without requiring a clock edge.
+
+Conceptually:
+
+```text
+rd1 = (rs1 == 0) ? 32'b0 : registers[rs1];
+
+rd2 = (rs2 == 0) ? 32'b0 : registers[rs2];
+```
+
+Therefore, changing `rs1` or `rs2` changes the corresponding output.
+
+### Example
+
+If:
+
+```text
+Register[5] = 100
+Register[10] = 200
+```
+
+and:
+
+```text
+rs1 = 5
+rs2 = 10
+```
+
+then:
+
+```text
+rd1 = 100
+rd2 = 200
+```
+
+---
+
+# 7. Write Operation
+
+The baseline register file uses **synchronous writes**.
+
+A write occurs on the active clock edge when:
+
+```text
+reg_write = 1
+```
+
+and:
+
+```text
+rd ≠ 0
+```
+
+The operation is:
+
+```text
+Register[rd] ← write_data
+```
+
+### Example
+
+Before the clock edge:
+
+```text
+rd = 5
+write_data = 32'd100
+reg_write = 1
+```
+
+At the active clock edge:
+
+```text
+Register[5] ← 100
+```
+
+After the write:
+
+```text
+rd1 = 100
+```
+
+when:
+
+```text
+rs1 = 5
+```
+
+---
+
+# 8. Reset Behavior
+
+The reset signal shall initialize the architectural register state to a known value.
+
+For the baseline implementation:
+
+```text
+reset → all registers = 0
+```
+
+After reset:
+
+```text
+x0  = 0
+x1  = 0
+x2  = 0
+...
+x31 = 0
+```
+
+Register `x0` must remain zero after reset and during normal operation.
+
+### Reset Type
+
+The baseline implementation shall use a **synchronous reset** unless the CPU-level architecture specification defines otherwise.
+
+This decision must remain consistent across the processor.
+
+---
+
+# 9. Same-Cycle Read and Write Behavior
+
+The register file shall support simultaneous reading and writing.
+
+Consider:
+
+```text
+rs1 = 5
+rd  = 5
+reg_write = 1
+```
+
+where `write_data` is being written to register 5.
+
+The exact read-during-write behavior must be explicitly defined for the implementation.
+
+For the baseline RTL implementation, the preferred behavior is:
+
+```text
+The newly written value is observable after the active clock edge.
+```
+
+Before the edge:
+
+```text
+rd1 = old Register[5]
+```
+
+After the edge:
+
+```text
+rd1 = new Register[5]
+```
+
+This behavior will be verified explicitly in the testbench.
+
+---
+
+# 10. Register File Organization
+
+The logical storage structure is:
+
+```text
+                 Register File
+
+       ┌──────────────────────────────┐
+rs1 ──►│                              │──► rd1
+       │                              │
+rs2 ──►│       32 × 32-bit           │──► rd2
+       │       Registers             │
+rd ───►│                              │
+       │                              │
+write ─►│                              │
+       └──────────────────────────────┘
+```
+
+The baseline register file therefore provides:
+
+```text
+2 read ports
+1 write port
+```
+
+This is commonly referred to as a:
+
+> **2R1W register file**
+
+---
+
+# 11. RV32I Compatibility
+
+The register file shall support the register fields used by RV32I instructions.
+
+For R-type instructions:
+
+```text
+rs1 = instruction[19:15]
+rs2 = instruction[24:20]
+rd  = instruction[11:7]
+```
+
+For I-type instructions:
+
+```text
+rs1 = instruction[19:15]
+rd  = instruction[11:7]
+```
+
+For S-type and B-type instructions:
+
+```text
+rs1 = instruction[19:15]
+rs2 = instruction[24:20]
+```
+
+Instructions that do not use one or more of these fields shall control the register file appropriately through `reg_write` and the processor's control logic.
+
+---
+
+# 12. No Third Read Port in Baseline
+
+The baseline RV32I register file shall **not contain an `rs3` / third read port**.
+
+RV32I instructions require at most two source operands:
+
+```text
+rs1
+rs2
+```
+
+Therefore the baseline interface is:
+
+```text
+2 read ports + 1 write port
+```
+
+A third read port may be considered later if a custom instruction or accelerator requires three source operands.
+
+Any such modification shall be specified separately rather than changing the baseline register file unnecessarily.
+
+---
+
+# 13. Fault-Tolerance Extension
+
+The baseline register file shall be designed so that fault-tolerance mechanisms can be added later without changing the processor's architectural interface unnecessarily.
+
+The future fault-tolerant implementation may investigate:
+
+### Triple Modular Redundancy
+
+```text
+             ┌── Register File A ──┐
+             ├── Register File B ──┼──► Majority Voter
+             └── Register File C ──┘
+```
+
+### Other possible techniques
+
+- TMR for register storage
+- voter placement
+- fault injection into register bits
+- error detection
+- error correction
+- register-level redundancy
+
+The external interface should remain compatible with the baseline:
+
+```text
+rs1
+rs2
+rd
+write_data
+reg_write
+rd1
+rd2
+```
+
+where practical.
+
+---
+
+# 14. Corner Cases
+
+The implementation and verification environment shall test at least the following cases:
+
+1. Reading `x0`
+2. Writing to `x0`
+3. Reading two different registers simultaneously
+4. Reading the same register through both read ports
+5. Writing every register from `x1` through `x31`
+6. Reset during normal operation
+7. Write disabled
+8. Read/write of the same register
+9. Maximum register addresses (`31`)
+10. Back-to-back writes
+11. Back-to-back reads
+12. Register values containing all zeros
+13. Register values containing all ones
+14. Alternating-bit patterns
+15. Signed and unsigned data patterns
+
+---
+
+# 15. Verification Requirements
+
+The register file shall be considered verified only after the following properties have been demonstrated.
+
+### Property 1 — x0 is always zero
+
+```text
+read(x0) = 0
+```
+
+regardless of previous writes.
+
+### Property 2 — Write correctness
+
+If:
+
+```text
+reg_write = 1
+rd ≠ 0
+```
+
+then after the active clock edge:
+
+```text
+Register[rd] = write_data
+```
+
+### Property 3 — Write protection of x0
+
+If:
+
+```text
+rd = 0
+```
+
+then:
+
+```text
+Register[0] = 0
+```
+
+must remain true.
+
+### Property 4 — Read correctness
+
+For:
+
+```text
+rs1 = n
+n ≠ 0
+```
+
+the output shall be:
+
+```text
+rd1 = Register[n]
+```
+
+Similarly:
+
+```text
+rd2 = Register[rs2]
+```
+
+### Property 5 — Independent read ports
+
+Changing `rs1` shall not affect `rd2`, and changing `rs2` shall not affect `rd1`.
+
+---
+
+# 16. Performance and Timing
+
+The baseline register file shall provide:
+
+- Combinational read access
+- Synchronous write access
+- One-cycle architectural write latency
+
+The exact implementation timing will depend on the target technology.
+
+For FPGA implementation, the synthesis tool may implement the register file using:
+
+- Flip-flops
+- Distributed RAM
+- Other inferred memory structures
+
+The implementation choice shall be evaluated during FPGA synthesis.
+
+---
+
+# 17. Future Pipeline Considerations
+
+The register file must be compatible with the planned 5-stage pipeline:
+
+```text
+IF
+↓
+ID
+↓
+EX
+↓
+MEM
+↓
+WB
+```
+
+Register reads occur primarily during:
+
+```text
+ID — Instruction Decode
+```
+
+Register writes occur during:
+
+```text
+WB — Write Back
+```
+
+The eventual pipelined implementation will additionally require consideration of:
+
+- Read-after-write hazards
+- Register forwarding
+- Write-back/read timing
+- Stall behavior
+
+These mechanisms belong to the pipeline/forwarding logic rather than the baseline register file itself.
+
+---
+
+# 18. Completion Criteria
+
+The register file implementation is complete when:
+
+- [ ] 32 × 32-bit register storage is implemented.
+- [ ] Two independent combinational read ports work correctly.
+- [ ] One synchronous write port works correctly.
+- [ ] `x0` is permanently zero.
+- [ ] Reset behavior is verified.
+- [ ] Same-cycle read/write behavior is verified.
+- [ ] All register addresses are tested.
+- [ ] Unit tests pass.
+- [ ] Assertions for critical architectural properties pass.
+- [ ] The module integrates correctly with the baseline RV32I core.
+
+---
+
+## 19. Planned Module
+
+**RTL file:**
+
+```text
+rtl/core/register_file.sv
+```
+
+**Unit testbench:**
+
+```text
+tb/unit/register_file_tb.sv
+```
+
+**Specification:**
+
+```text
+docs/specs/register_file.md
+```

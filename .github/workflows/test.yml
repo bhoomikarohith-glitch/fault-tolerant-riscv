@@ -1,0 +1,36 @@
+# =============================================================================
+# test.yml  -  Continuous integration (GitHub Actions)               (row 21)
+# -----------------------------------------------------------------------------
+# GitHub reads this file automatically from .github/workflows/. On every push
+# and pull request it starts a fresh Ubuntu machine, installs the tools, and
+# runs the tests. The result shows as a green tick or red cross next to each
+# commit; click it to see which test failed.
+# =============================================================================
+
+name: tests                      # name shown in the repo's Actions tab
+
+on:                              # when to run
+  push:                          #   every push, to any branch
+  pull_request:                  #   every pull request
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04        # a fresh Ubuntu virtual machine
+    steps:
+      # 1. Download the repository onto the machine.
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # 2. Install Icarus Verilog and the RISC-V cross-compiler.
+      - name: Install Icarus Verilog and the RISC-V toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog gcc-riscv64-unknown-elf binutils-riscv64-unknown-elf
+
+      # 3. Run everything. A failing test makes make exit with an error,
+      #    which turns the run red.
+      - name: Run all tests
+        run: make test
+
+      - name: Run the ECC encoder unit test
+        run: make ecc-test

@@ -15,7 +15,7 @@ module alu (
       ALU_ADD:  result = a + b;  //addition
       ALU_SUB:  result = a - b;  //subtraction
       ALU_SLL:  result = a << shamt;  //logical LEFT shift 'a' by shamt
-      ALU_SLT:  result = {31'b0, $signed(a) < $signed(b)};  //result = 1 if signed(a<b)
+      ALU_SLT:  result = {31'b0, $signed(a) < $signed(b)};  //result = 1 if signed(a<b), concatenation
       ALU_SLTU: result = {31'b0, a < b};  //result = 1 if unsigned(a<b)
       ALU_XOR:  result = a ^ b; // a xor b
       ALU_SRL:  result = a >> shamt; //logical RIGHT shift by shamt

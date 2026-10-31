@@ -8,7 +8,7 @@
 module alu_decoder (
   input  logic       opb5,        // instr[5]: 1 = R-type, 0 = I-type ALU
   input  logic [2:0] funct3,      // instr[14:12]
-  input  logic       funct7b5,    // instr[30]
+  input  logic       funct7b5,    // instr[30] (only for R-type - to distinguish in between diff R-types
   input  logic [1:0] aluop,       // class from the main decoder
   output logic [3:0] alucontrol   // code for the ALU
 );

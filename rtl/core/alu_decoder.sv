@@ -1,9 +1,3 @@
-//   Turns the main decoder's coarse "aluop" into the exact 4-bit ALU code.
-//
-//   aluop = 00 -> ADD   (loads, stores, jalr: compute an address)
-//   aluop = 01 -> SUB   (branches; unused because branch_comp decides them)
-//   aluop = 10 -> look at funct3 and instruction bit 30 (R-type / I-type)
-//   aluop = 11 -> ADD   (never produced; safe default)
 
 module alu_decoder (
   input  logic       opb5,        // instr[5]: 1 = R-type, 0 = I-type ALU
@@ -30,16 +24,16 @@ module alu_decoder (
                   alucontrol = ALU_SUB; //sub
                 else 
                   alucontrol = ALU_ADD;  //add, addi
-        3'b001: alucontrol = ALU_XOR; 
-        3'b010: alucontrol = ALU_SLL; //sll, slli 
-        3'b011: alucontrol = ALU_SRA;
-        3'b100: alucontrol = ALU_SLT; //slt, slti
-        3'b101: alucontrol = ALU_SRA;
-        3'b110: alucontrol = ALU_OR; //or, ori
-        3'b111: alucontrol = ALU_AND; //and, andi
+        3'b001: alucontrol = ALU_SLL; 
+        3'b010: alucontrol = ALU_SLT; 
+        3'b011: alucontrol = ALU_SLTU;
+        3'b100: alucontrol = ALU_XOR; 
+        3'b101: alucontrol = ALU_SRL;
+        3'b110: alucontrol = ALU_OR;
+        3'b111: alucontrol = ALU_AND; 
       endcase
     endcase
-    
+  end
 endmodule
 
 // -----------------------------------------------------------------------------

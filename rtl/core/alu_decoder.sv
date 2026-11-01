@@ -28,7 +28,7 @@ module alu_decoder (
         3'b010: alucontrol = ALU_SLT; 
         3'b011: alucontrol = ALU_SLTU;
         3'b100: alucontrol = ALU_XOR; 
-        3'b101: alucontrol = ALU_SRL;
+        3'b101: alucontrol = funct7b5 ? ALU_SRA : ALU_SRL;
         3'b110: alucontrol = ALU_OR;
         3'b111: alucontrol = ALU_AND; 
       endcase

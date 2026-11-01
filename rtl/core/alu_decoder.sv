@@ -15,39 +15,31 @@ module alu_decoder (
 
   import rv_pkg::*;               // ALU_ADD, ALU_SUB, ALUOP_* ...
 
-  logic sub_or_sra;               // the extra top bit: 1 for SUB or SRA
+  logic RtypeSub;    
+  assign RtypeSub = funct7b5 & opb5; // TRUE for Rtype subtract
 
   always_comb begin
 
     // ---------------------------------------------- step 1: the extra bit
-    case (funct3)
+    case (ALUOp)
 
-      // funct3 = 000 is add or sub. Bit 30 = 1 means SUB, but ONLY for
-      // R-type. In ADDI, bit 30 is part of the immediate, so a negative
-      // immediate (e.g. addi x7, x3, -9) has bit 30 = 1. Checking opb5
-      // (R-type only) stops ADDI being decoded as a subtract.
-      3'b000:  sub_or_sra = opb5 & funct7b5;
-
-      // funct3 = 101 is a right shift. Bit 30 = 1 means arithmetic (SRA),
-      // and this is true for BOTH sra (R-type) and srai (I-type), so no
-      // opb5 check here.
-      3'b101:  sub_or_sra = funct7b5;
-
-      // All other operations have no second variant.
-      default: sub_or_sra = 1'b0;
-
+      ALUOP_ADD: alucontrol = ALU_ADD;
+      ALUOP_SUB: alucontrol = ALU_SUB;
+      default: case(funct3)
+        3'b000: if(RtypeSub)
+                  alucontrol = ALU_SUB; //sub
+                else 
+                  alucontrol = ALU_ADD;  //add, addi
+        3'b001: alucontrol = ALU_XOR; 
+        3'b010: alucontrol = ALU_SLL; //sll, slli 
+        3'b011: alucontrol = ALU_SRA;
+        3'b100: alucontrol = ALU_SLT; //slt, slti
+        3'b101: alucontrol = ALU_SRA;
+        3'b110: alucontrol = ALU_OR; //or, ori
+        3'b111: alucontrol = ALU_AND; //and, andi
+      endcase
     endcase
-
-    // ---------------------------------------------- step 2: the final code
-    case (aluop)
-      ALUOP_ADD:   alucontrol = ALU_ADD;               // address calculation
-      ALUOP_SUB:   alucontrol = ALU_SUB;               // branches (unused)
-      ALUOP_FUNCT: alucontrol = {sub_or_sra, funct3};  // {} joins the bits
-      default:     alucontrol = ALU_ADD;               // aluop 11: safe default
-    endcase
-
-  end
-
+    
 endmodule
 
 // -----------------------------------------------------------------------------

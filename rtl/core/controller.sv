@@ -6,9 +6,10 @@ module controller (
   input  logic [6:0] op,          // instr[6:0]
   input  logic [2:0] funct3,      // instr[14:12]
   input  logic       funct7b5,    // instr[30]
+  input logic        zero,
   output logic       regwrite,
   output logic [2:0] immsrc,
-  output logic       alusrc,
+  output logic       alusrc,pcsrc,
   output logic       memwrite,
   output logic [2:0] resultsrc,
   output logic       branch,
@@ -44,5 +45,7 @@ module controller (
     .aluop      (aluop),      // from the main decoder
     .alucontrol (alucontrol)
   );
+
+  assign pcsrc = branch & zero | jump;
 
 endmodule

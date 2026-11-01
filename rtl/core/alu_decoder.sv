@@ -21,7 +21,7 @@ module alu_decoder (
   always_comb begin
 
     // ---------------------------------------------- step 1: the extra bit
-    case (ALUOp)
+    case (aluop)
 
       ALUOP_ADD: alucontrol = ALU_ADD;
       ALUOP_SUB: alucontrol = ALU_SUB;

@@ -3,6 +3,8 @@ module extend( input [2:0]immsrc,
                 output logic [31:0]immext
                 );
 
+  import rv_pkg::*;
+
 always @(*)
 begin 
 case(immsrc)

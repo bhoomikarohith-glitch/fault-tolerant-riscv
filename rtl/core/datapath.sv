@@ -6,7 +6,6 @@
 //   WRITE    result_mux picks the value written back into rd
 //   NEXT     next_pc picks the next PC, which pc_reg loads at the clock edge
 
-
 module datapath (
   input  logic        clk,
   input  logic        reset,

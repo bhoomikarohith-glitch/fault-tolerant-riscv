@@ -40,4 +40,12 @@ package rv_pkg;
   localparam logic [2:0] RES_IMM    = 3'b011;  
   localparam logic [2:0] RES_PCTGT  = 3'b100;  
 
+  // 1. Add the RISC-V Custom-0 standard Opcode mapping descriptor
+  localparam logic [6:0] OP_CUSTOM0 = 7'b0001011;
+
+  // 2. Add your new control tokens to your existing enums:
+  // Assuming ALUOP_ADD=2'b00, ALUOP_SUB=2'b01, ALUOP_FUNCT=2'b10
+  localparam logic [1:0] ALUOP_CUSTOM0 = 2'b11; // Uses the free 4th state
+
+
 endpackage

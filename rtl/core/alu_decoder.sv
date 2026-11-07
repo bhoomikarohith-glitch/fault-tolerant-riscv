@@ -19,6 +19,10 @@ module alu_decoder (
 
       ALUOP_ADD: alucontrol = ALU_ADD;
       ALUOP_SUB: alucontrol = ALU_SUB;
+
+      // --- INTERCEPT CUSTOM MULTIPLIER INSTRUCTION ---
+      ALUOP_CUSTOM0: alucontrol = ALU_MULX; 
+      
       default: case(funct3)
         3'b000: if(RtypeSub)
                   alucontrol = ALU_SUB; //sub

@@ -22,6 +22,10 @@ module alu (
       ALU_SRA:  result = $signed(a) >>> shamt;  //arithmetic RIGHT shift by shamt
       ALU_OR:   result = a | b; //a or b
       ALU_AND:  result = a & b; //a and b
+
+      // Route the lower 32 bits of the Booth Multiplier out to rd
+      ALU_MULX: result = multiplier_out[31:0]; 
+      
       default:  result = 32'b0; //default alu result = 0
     endcase
   end

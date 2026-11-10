@@ -17,7 +17,7 @@ module booth_multiplier (
             logic [2:0] window;
             logic signed [63:0] base_pp;
             
-            window = B_ext[2*i + 2 : 2*i];
+            window = B_ext[2*i +: 3];
             
             case (window)
                 3'b000, 3'b111 : base_pp = 64'd0;
@@ -45,7 +45,7 @@ module booth_multiplier (
                 .sum(stage1_s[g]), .cout(stage1_c[g])
             );
         end
-    </generate>
+    endgenerate
 
     // LAYER 2: Compress 9 inputs down to 6 vectors
     logic [64:0] stage2_s [2:0];

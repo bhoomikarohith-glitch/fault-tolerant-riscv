@@ -7,6 +7,18 @@ module alu (
 
   import rv_pkg::*;
 
+  // MULX: the Booth multiplier always computes a*b; the case below
+  // only routes its low 32 bits out when alucontrol = ALU_MULX.
+  logic [63:0] multiplier_out;
+  logic        mul_error;        // residue-check hook, unused for now
+
+  booth_multiplier u_mul (
+    .A          (a),
+    .B          (b),
+    .product    (multiplier_out),
+    .error_flag (mul_error)
+  );
+
   logic [4:0] shamt;  //shift amount
   assign shamt = b[4:0];  //takes last 5 LSBits of b
 

@@ -33,7 +33,7 @@ package rv_pkg;
   localparam logic [3:0] ALU_SRA  = 4'b1101;
   localparam logic [3:0] ALU_OR   = 4'b0110;
   localparam logic [3:0] ALU_AND  = 4'b0111;
-  localparam logic [3:0] LU_MULX  = 4'b1010;
+  localparam logic [3:0] ALU_MULX = 4'b1010;  // custom MULX
   localparam logic [2:0] RES_ALU    = 3'b000;  
   localparam logic [2:0] RES_MEM    = 3'b001;  
   localparam logic [2:0] RES_PC4    = 3'b010;  

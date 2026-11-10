@@ -5,7 +5,7 @@
 2. Copy it to `fpga/program.mem` (the name `fpga_top.sv` expects).
 3. In Vivado, create a project for part **xc7a35tcpg236-1** (Basys 3) and add:
    - design sources: everything in `rtl/common/` (add `rv_pkg.sv`), `rtl/core/`,
-     `rtl/memory/`, `rtl/cpu_top.sv` and `fpga/fpga_top.sv`
+     `rtl/memory/`, `rtl/multiplier/`, `rtl/cpu_top.sv` and `fpga/fpga_top.sv`
    - `fpga/program.mem` (as a design source; Vivado treats it as a memory init file)
    - constraints: `fpga/basys3.xdc`
 4. Set `fpga_top` as the top module.

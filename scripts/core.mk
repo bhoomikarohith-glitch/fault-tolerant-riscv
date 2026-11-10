@@ -51,6 +51,7 @@ RTL := $(PKG) \
        $(filter-out $(PKG),$(wildcard rtl/common/*.sv)) \
        $(wildcard rtl/core/*.sv) \
        $(wildcard rtl/memory/*.sv) \
+       $(wildcard rtl/multiplier/*.sv) \
        rtl/cpu_top.sv
 TB  := tb/system/cpu_top_tb.sv
 
@@ -62,7 +63,7 @@ VVP_FLAGS := $(if $(VCD),+vcd,)
 
 # ---------------------------------------------------------------- test lists
 # Our own programs, as name:expected-signature.
-PROGRAMS := rv32i_smoke:1 array_sum:64 fibonacci:6765 bubble_sort:8111
+PROGRAMS := rv32i_smoke:1 array_sum:64 fibonacci:6765 bubble_sort:8111 mulx:1
 
 # Official riscv-tests, pinned to one commit so results never change under us.
 # Left out: fence_i (needs the Zifencei extension) and ma_data (misaligned

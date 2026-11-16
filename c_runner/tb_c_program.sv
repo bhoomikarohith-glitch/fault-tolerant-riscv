@@ -73,7 +73,7 @@ module tb_c_program;
                     else $fatal(1, "FAIL: C main returned %0d, expected %0d",
                                 $signed(writedata), expected);
                 #1; // Verify that the actual data-memory RTL committed the result.
-                assert (dut.u_data_mem.mem[1023] === 32'(expected))
+                                assert (ecc_pkg::secded_decode_data(dut.u_data_mem.mem[1023]) === 32'(expected))
                     else $fatal(1, "Result was not stored in data memory");
                 $display("PASS: C main returned %0d (expected %0d), %0d cycles",
                          expected, expected, cycles);

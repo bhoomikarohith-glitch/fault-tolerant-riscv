@@ -103,7 +103,9 @@ def main():
         simulator = [shutil.which("verilator")]
     else:
         parser.error("Install Verilator with: python -m pip install verilator")
-    rtl = [ROOT / "rtl/common/rv_pkg.sv", ROOT / "rtl/common/adder.sv", ROOT / "rtl/common/mux2.sv"]
+    rtl = [ROOT / "rtl/common/rv_pkg.sv", ROOT / "rtl/ecc/ecc_pkg.sv",
+        ROOT / "rtl/common/adder.sv", ROOT / "rtl/common/mux2.sv",
+        ROOT / "rtl/ecc/secded_enc.sv", ROOT / "rtl/ecc/secded_dec.sv"]
     for folder in ["core", "memory", "multiplier"]:
         rtl.extend(sorted((ROOT / "rtl" / folder).glob("*.sv")))
     rtl.append(ROOT / "rtl/cpu_top.sv")

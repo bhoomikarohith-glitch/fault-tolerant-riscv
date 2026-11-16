@@ -47,8 +47,9 @@ PASS_VAL ?= 1
 
 # Every RTL file. The package goes first because other files import it.
 PKG := rtl/common/rv_pkg.sv
-RTL := $(PKG) \
+RTL := $(PKG) rtl/ecc/ecc_pkg.sv \
        $(filter-out $(PKG),$(wildcard rtl/common/*.sv)) \
+       rtl/ecc/secded_enc.sv rtl/ecc/secded_dec.sv \
        $(wildcard rtl/core/*.sv) \
        $(wildcard rtl/memory/*.sv) \
        $(wildcard rtl/multiplier/*.sv) \

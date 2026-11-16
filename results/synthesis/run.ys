@@ -1,0 +1,13 @@
+read_verilog -sv synthesis/compatible_rtl/adder.sv synthesis/compatible_rtl/mux2.sv synthesis/compatible_rtl/alu.sv synthesis/compatible_rtl/alu_decoder.sv synthesis/compatible_rtl/branch_comp.sv synthesis/compatible_rtl/controller.sv synthesis/compatible_rtl/datapath.sv synthesis/compatible_rtl/extend.sv synthesis/compatible_rtl/main_decoder.sv synthesis/compatible_rtl/next_pc.sv synthesis/compatible_rtl/pc_reg.sv synthesis/compatible_rtl/register_file.sv synthesis/compatible_rtl/result_mux.sv synthesis/compatible_rtl/rv32i_single.sv synthesis/compatible_rtl/booth_multiplier.sv synthesis/compatible_rtl/compressor_3_2.sv
+hierarchy -check -top rv32i_single
+proc
+opt
+check -assert
+write_json synthesis/core_rtl.json
+show -format dot -prefix synthesis/core_hierarchy rv32i_single
+show -format dot -prefix synthesis/datapath datapath
+synth -noabc -top rv32i_single
+check -assert
+stat
+write_verilog -noattr synthesis/core_netlist.v
+write_json synthesis/core_synth.json

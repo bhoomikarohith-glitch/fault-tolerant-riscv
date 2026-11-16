@@ -1,0 +1,414 @@
+
+-- Running command `read_json synthesis/core_synth.json; show -format dot -prefix synthesis/pc_gates pc_reg; stat -top rv32i_single' --
+
+1. Executing JSON frontend.
+Importing module rv32i_single from JSON tree.
+Importing module result_mux from JSON tree.
+Importing module register_file from JSON tree.
+Importing module pc_reg from JSON tree.
+Importing module next_pc from JSON tree.
+Importing module main_decoder from JSON tree.
+Importing module extend from JSON tree.
+Importing module datapath from JSON tree.
+Importing module controller from JSON tree.
+Importing module branch_comp from JSON tree.
+Importing module booth_multiplier from JSON tree.
+Importing module alu_decoder from JSON tree.
+Importing module alu from JSON tree.
+Importing module $paramod\mux2\WIDTH=s32'00000000000000000000000000100000 from JSON tree.
+Importing module $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000101 from JSON tree.
+Importing module $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000100 from JSON tree.
+Importing module $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000011 from JSON tree.
+Importing module $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000010 from JSON tree.
+Importing module $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000001 from JSON tree.
+Importing module $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000000 from JSON tree.
+Importing module $paramod\adder\WIDTH=s32'00000000000000000000000000100000 from JSON tree.
+
+2. Generating Graphviz representation of design.
+Writing dot description to `synthesis/pc_gates.dot'.
+Dumping module pc_reg to page 1.
+
+3. Printing statistics.
+
+=== $paramod\adder\WIDTH=s32'00000000000000000000000000100000 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      102 wires
+      288 wire bits
+        3 public wires
+       96 public wire bits
+        3 ports
+       96 port bits
+      220 cells
+      105   $_AND_
+       52   $_OR_
+       63   $_XOR_
+
+=== $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000000 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       11 wires
+      705 wire bits
+        6 public wires
+      385 public wire bits
+        5 ports
+      321 port bits
+      448 cells
+      192   $_AND_
+      128   $_OR_
+      128   $_XOR_
+
+=== $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000001 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       11 wires
+      716 wire bits
+        6 public wires
+      391 public wire bits
+        5 ports
+      326 port bits
+      455 cells
+      195   $_AND_
+      130   $_OR_
+      130   $_XOR_
+
+=== $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000010 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       11 wires
+      727 wire bits
+        6 public wires
+      397 public wire bits
+        5 ports
+      331 port bits
+      462 cells
+      198   $_AND_
+      132   $_OR_
+      132   $_XOR_
+
+=== $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000011 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       11 wires
+      738 wire bits
+        6 public wires
+      403 public wire bits
+        5 ports
+      336 port bits
+      469 cells
+      201   $_AND_
+      134   $_OR_
+      134   $_XOR_
+
+=== $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000100 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       11 wires
+      749 wire bits
+        6 public wires
+      409 public wire bits
+        5 ports
+      341 port bits
+      476 cells
+      204   $_AND_
+      136   $_OR_
+      136   $_XOR_
+
+=== $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000101 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       11 wires
+      760 wire bits
+        6 public wires
+      415 public wire bits
+        5 ports
+      346 port bits
+      483 cells
+      207   $_AND_
+      138   $_OR_
+      138   $_XOR_
+
+=== $paramod\mux2\WIDTH=s32'00000000000000000000000000100000 ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        4 wires
+       97 wire bits
+        4 public wires
+       97 public wire bits
+        4 ports
+       97 port bits
+       32 cells
+       32   $_MUX_
+
+=== alu ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      694 wires
+     1866 wire bits
+        7 public wires
+      170 public wire bits
+        4 ports
+      100 port bits
+     1521 cells
+      511   $_AND_
+      404   $_MUX_
+       49   $_NOT_
+      429   $_OR_
+      128   $_XOR_
+        1 submodules
+        1   booth_multiplier
+
+=== alu_decoder ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       43 wires
+       60 wire bits
+        6 public wires
+       12 public wire bits
+        5 ports
+       11 port bits
+       51 cells
+        2   $_AND_
+        8   $_MUX_
+       15   $_NOT_
+       26   $_OR_
+
+=== booth_multiplier ===
+
+        +----------Local Count, excluding submodules.
+        | 
+     4726 wires
+     9245 wire bits
+       53 public wires
+     3301 public wire bits
+        4 ports
+      129 port bits
+     6518 cells
+     2951   $_AND_
+      784   $_MUX_
+      157   $_NOT_
+     2376   $_OR_
+      250   $_XOR_
+       14 submodules
+        5   $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000000
+        3   $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000001
+        2   $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000010
+        2   $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000011
+        1   $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000100
+        1   $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000101
+
+=== branch_comp ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      116 wires
+      365 wire bits
+        4 public wires
+       68 public wire bits
+        4 ports
+       68 port bits
+      245 cells
+      104   $_AND_
+        1   $_MUX_
+       45   $_NOT_
+       60   $_OR_
+       35   $_XOR_
+
+=== controller ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       13 wires
+       29 wire bits
+       13 public wires
+       29 public wire bits
+       12 ports
+       27 port bits
+        2 submodules
+        1   alu_decoder
+        1   main_decoder
+
+=== datapath ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       23 wires
+      402 wire bits
+       23 public wires
+      402 public wire bits
+       15 ports
+      177 port bits
+        8 submodules
+        1   $paramod\mux2\WIDTH=s32'00000000000000000000000000100000
+        1   alu
+        1   branch_comp
+        1   extend
+        1   next_pc
+        1   pc_reg
+        1   register_file
+        1   result_mux
+
+=== extend ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      132 wires
+      228 wire bits
+        3 public wires
+       67 public wire bits
+        3 ports
+       67 port bits
+      173 cells
+       63   $_AND_
+       31   $_MUX_
+        7   $_NOT_
+       72   $_OR_
+
+=== main_decoder ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       63 wires
+      102 wire bits
+       10 public wires
+       21 public wire bits
+       10 ports
+       21 port bits
+       76 cells
+        8   $_MUX_
+       17   $_NOT_
+       51   $_OR_
+
+=== next_pc ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       13 wires
+      261 wire bits
+       10 public wires
+      196 public wire bits
+       10 ports
+      196 port bits
+       97 cells
+        1   $_AND_
+       96   $_MUX_
+        2 submodules
+        2   $paramod\adder\WIDTH=s32'00000000000000000000000000100000
+
+=== pc_reg ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        5 wires
+       67 wire bits
+        5 public wires
+       67 public wire bits
+        5 ports
+       67 port bits
+       32 cells
+       32   $_DFFE_PP0P_
+
+=== register_file ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      231 wires
+     3315 wire bits
+       41 public wires
+     1138 public wire bits
+        9 ports
+      114 port bits
+     3203 cells
+       81   $_AND_
+     2049   $_MUX_
+        5   $_NOT_
+       44   $_OR_
+     1024   $_SDFFCE_PN0P_
+
+=== result_mux ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      283 wires
+      504 wire bits
+        7 public wires
+      195 public wire bits
+        7 ports
+      195 port bits
+      341 cells
+      160   $_AND_
+       32   $_MUX_
+        8   $_NOT_
+      141   $_OR_
+
+=== rv32i_single ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       17 wires
+      181 wire bits
+       17 public wires
+      181 public wire bits
+        9 ports
+      166 port bits
+        2 submodules
+        1   controller
+        1   datapath
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+    19155 rv32i_single
+       51   alu_decoder
+       76   main_decoder
+       32   $paramod\mux2\WIDTH=s32'00000000000000000000000000100000
+     1521   alu
+     6518     booth_multiplier
+      448       $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000000
+      455       $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000001
+      462       $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000010
+      469       $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000011
+      476       $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000100
+      483       $paramod\compressor_3_2\WIDTH=s32'00000000000000000000000001000101
+      245   branch_comp
+      173   extend
+       97   next_pc
+      220     $paramod\adder\WIDTH=s32'00000000000000000000000000100000
+       32   pc_reg
+     3203   register_file
+      341   result_mux
+
+        +----------Count including submodules.
+        | 
+     6721 wires
+    27410 wire bits
+      293 public wires
+    11658 public wire bits
+      177 ports
+     6231 port bits
+        - memories
+        - memory bits
+        - processes
+    19155 cells
+     6837   $_AND_
+       32   $_DFFE_PP0P_
+     3445   $_MUX_
+      303   $_NOT_
+     5139   $_OR_
+     1024   $_SDFFCE_PN0P_
+     2375   $_XOR_
+        2 submodules
+        1   controller
+        1   datapath
+

@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+make sim VCD=1`timescale 1ns/1ps
 
 // ==============================================================================
 // 1. TRANSACTION INTERFACE (Sequence Item)

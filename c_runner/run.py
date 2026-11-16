@@ -78,9 +78,9 @@ def main():
     gcc = shutil.which("riscv64-unknown-elf-gcc")
     if importlib.util.find_spec("ziglang"):
         compiler = [sys.executable, "-m", "ziglang", "cc", "-target",
-                    "riscv32-freestanding", "-mcpu=generic_rv32"]
+                    "riscv32-freestanding", "-mcpu=generic_rv32+m"]
     elif gcc:
-        compiler = [gcc, "-march=rv32i"]
+        compiler = [gcc, "-march=rv32im"]
     else:
         parser.error('Install the C compiler with: python -m pip install "ziglang==0.13.0"')
 

@@ -113,3 +113,10 @@ temp/
 *.bit
 *.ltx
 *.bin
+build/
+.venv-rv/
+__pycache__/
+*.vcd
+build/
+.venv-rv/
+__pycache__/

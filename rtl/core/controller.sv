@@ -6,6 +6,7 @@ module controller (
   input  logic [6:0] op,          // instr[6:0]
   input  logic [2:0] funct3,      // instr[14:12]
   input  logic       funct7b5,    // instr[30]
+  input  logic       funct7b0,    // instr[25] -mul
   output logic       regwrite,
   output logic [2:0] immsrc,
   output logic       alusrc,
@@ -41,6 +42,7 @@ module controller (
     .opb5       (op[5]),      // opcode bit 5: 1 for R-type, 0 for I-type ALU
     .funct3     (funct3),
     .funct7b5   (funct7b5),
+    .funct7b0   (funct7b0),
     .aluop      (aluop),      // from the main decoder
     .alucontrol (alucontrol)
   );

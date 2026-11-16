@@ -24,6 +24,7 @@ module rv32i_single (
     .op         (instr[6:0]),      // opcode
     .funct3     (instr[14:12]),
     .funct7b5   (instr[30]),       // distinguishes add/sub and srl/sra
+    .funct7b0   (instr[25]),
     .regwrite   (regwrite),
     .immsrc     (immsrc),
     .alusrc     (alusrc),

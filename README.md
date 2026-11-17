@@ -1,103 +1,130 @@
-# Fault-Tolerant RV32I RISC-V Processor
+# Fault-Tolerant RISC-V Processor
 
-A fault-tolerant RV32I RISC-V processor designed with hardware reliability, verification, and implementation in mind.
+An RV32I-based single-cycle RISC-V processor extended with radix-4 Booth multiplication and SECDED-protected data memory, implemented in SystemVerilog.
 
 ## Overview
 
-This project develops a RISC-V processor from RTL through verification and hardware implementation, with a focus on improving processor reliability against hardware faults.
+This project explores processor design, hardware arithmetic, memory protection, and verification.
 
-The project explores and evaluates different fault-tolerance techniques, including:
+The current implementation includes a single-cycle processor, an integrated hardware multiplier, and ECC-protected data memory. C programs have been executed on the RTL using Verilator, and synthesized logic has been inspected in Vivado.
 
-- Error Correcting Codes (ECC)
-- Triple Modular Redundancy (TMR)
-- Fault injection and recovery
-- Formal verification
-- FPGA implementation
-- ASIC synthesis and physical design
+Future development will introduce a five-stage pipeline and evaluate additional fault-tolerance techniques, with a focus on reliability, performance, area, and power.
 
-The goal is to study the trade-offs between **reliability, performance, area, and power** across different processor configurations.
+## Current Implementation
 
-## Architecture
+### Single-Cycle Processor
 
-The processor is based on the **RISC-V RV32I instruction set architecture**.
+- 32-bit datapath.
+- 32 x 32-bit register file.
+- ALU, instruction decoding, immediate generation, and control logic.
+- Load/store operations, branches, and jumps.
+- Integrated MUL instruction support.
 
-Planned development stages:
+The processor extends an RV32I-based design with MUL support; it does not implement the complete RV32M extension.
 
-1. RV32I single-cycle processor
-2. 5-stage pipelined processor
-3. Data forwarding and hazard detection
-4. Pipeline flushing and branch handling
-5. Performance monitoring and CPI measurement
-6. ECC-protected memories
-7. TMR-based fault tolerance
-8. Fault injection and reliability analysis
-9. FPGA implementation
-10. ASIC synthesis and physical design
+### Radix-4 Booth Multiplier
 
-## Verification
+- Signed 32 x 32-bit multiplication.
+- Full 64-bit product generation.
+- Radix-4 Booth recoding to reduce partial products.
+- 3:2 compressor tree for partial-product reduction.
+- Final carry-propagate adder.
+- Lower 32 bits written to the destination register for MUL.
 
-The processor will be verified using a combination of:
+### SECDED-Protected Data Memory
 
-- Directed tests
-- Randomized instruction testing
-- Cocotb
-- Verilator
-- RISC-V architectural tests
-- Spike reference-model comparison
-- SystemVerilog assertions
-- Functional coverage
-- Formal verification using riscv-formal and SymbiYosys
+- (39,32) Hamming SECDED encoding.
+- Single-bit error correction.
+- Double-bit error detection.
+- Encoding during stores and decoding during loads.
+- Read-modify-write support for byte and halfword stores.
 
-## Fault-Tolerance Study
+## Verification and Results
 
-Multiple processor configurations will be evaluated to quantify the cost and effectiveness of fault-tolerance mechanisms.
+An AI-assisted interface was used to run C programs on the processor through Verilator and check their results.
+
+Successfully executed programs include:
+
+- 3 x 3 matrix multiplication.
+- Bubble sort.
+- Recursive factorial.
+- Weighted checksum.
+
+A C benchmark returned the expected value of 1532 in 3,046 cycles, approximately half the cycles required by the software-multiplication version.
+
+This comparison measures execution cycles. Execution-time comparisons also require the operating clock frequency.
+
+Vivado synthesis and schematic inspection have been performed, including inspection of the multiplier and ECC circuitry.
+
+## Development Roadmap
+
+| Stage | Status |
+|---|---|
+| Single-cycle RV32I-based processor | Implemented |
+| Radix-4 Booth multiplier | Implemented |
+| MUL instruction integration | Implemented |
+| SECDED-protected data memory | Implemented |
+| C program execution using Verilator | Demonstrated |
+| Vivado synthesis and schematic inspection | Performed |
+| Five-stage pipelined processor | Planned |
+| Data forwarding and hazard detection | Planned |
+| Pipeline flushing and branch handling | Planned |
+| Performance monitoring and CPI measurement | Planned |
+| TMR-based protection | Planned |
+| Fault injection and reliability analysis | Planned |
+| FPGA implementation | Planned |
+| ASIC synthesis and physical design | Planned |
+
+## Planned Verification
+
+Further verification will include:
+
+- Additional directed instruction tests.
+- Randomized instruction testing.
+- SystemVerilog assertions.
+- Functional coverage.
+- Cocotb-based testing.
+- RISC-V architectural tests.
+- Spike reference-model comparison.
+- Formal verification using riscv-formal and SymbiYosys.
+- Fault-injection experiments.
+
+These activities are planned and are not claimed as completed verification.
+
+## Planned Fault-Tolerance Study
+
+The project aims to compare different processor configurations using consistent workloads and fault-injection conditions.
 
 | Configuration | Description |
 |---|---|
-| A | Baseline processor |
-| B | ECC-protected processor |
-| C | TMR-protected processor |
-| D | ECC + TMR |
-| E | ECC + TMR + custom instruction |
-| F | ECC + TMR + protected accelerator |
+| Baseline | Processor without added fault protection |
+| ECC | Processor with ECC-protected data memory |
+| TMR | Processor with redundancy in selected hardware blocks |
+| ECC + TMR | Combined memory protection and hardware redundancy |
+| Protected accelerator | Processor with an accelerator and additional fault protection |
 
-Metrics will include:
+Evaluation metrics will include:
 
-- FPGA LUT utilization
-- Flip-flop utilization
-- Maximum operating frequency
-- ASIC area
-- Power
-- CPI
-- Execution cycles
-- Fault detection rate
-- Fault correction rate
-- Silent Data Corruption (SDC) rate
-- Reliability improvement
-- Performance and area overhead
-
-## Repository Structure
-
-```text
-rtl/              Processor RTL
-tb/               Testbenches
-verification/     Verification infrastructure
-software/         RISC-V software and test programs
-scripts/          Build and simulation scripts
-fpga/             FPGA implementation
-asic/             ASIC synthesis and physical design
-fault_injection/  Fault injection experiments
-results/          Experimental results and measurements
-docs/             Architecture and project documentation
-```
+- Execution cycles and CPI.
+- FPGA LUT and flip-flop utilization.
+- Maximum operating frequency.
+- ASIC area and estimated power.
+- Fault detection rate.
+- Fault correction rate.
+- Silent Data Corruption (SDC) rate.
+- Performance and resource overhead.
 
 ## Tools
 
-The project is expected to use tools including:
+### Used in Current Development
 
 - SystemVerilog
 - RISC-V GCC
 - Verilator
+- Vivado
+
+### Planned for Further Development
+
 - Cocotb
 - Spike
 - riscv-formal
@@ -105,16 +132,16 @@ The project is expected to use tools including:
 - Yosys
 - OpenLane
 - SKY130
-- Vivado
 
 ## Project Status
 
-**Active Development**
+Active Development
 
-The architecture, verification environment, fault-tolerance mechanisms, and implementation flow are being developed incrementally.
+The single-cycle processor, hardware multiplier, and SECDED-protected data memory are implemented.
+
+The next major stage is a five-stage pipeline with data forwarding, hazard detection, pipeline flushing, and branch handling.
 
 ## Authors
 
-**Bhoomika Rohith**
-
-**Chinmay Rao**
+- Bhoomika Rohith
+- Chinmay Rao

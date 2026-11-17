@@ -1,0 +1,45 @@
+[*]
+[*] GTKWave layout for the ECC demo: gtkwave build/ecc_demo.vcd tb/system/ecc_demo.gtkw
+[*]
+[dumpfile] "build/ecc_demo.vcd"
+[timestart] 120000
+[size] 1600 760
+[pos] -1 -1
+*-16.600000 210000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 1
+[signals_width] 300
+[sst_expanded] 0
+[sst_vpaned_height] 1
+@28
+ecc_demo_tb.clk
+@200
+-
+-------- RADIATION STRIKE --------
+@28
+ecc_demo_tb.strike
+@200
+-
+-------- WHAT IS STORED IN MEMORY --------
+@28
+ecc_demo_tb.stored_codeword[38:0]
+@24
+ecc_demo_tb.value_without_ecc[31:0]
+@200
+-
+-------- ECC DECODER VERDICT --------
+@24
+ecc_demo_tb.syndrome[5:0]
+@28
+ecc_demo_tb.single_err
+ecc_demo_tb.double_err
+@24
+ecc_demo_tb.value_with_ecc[31:0]
+@200
+-
+-------- THE CORE READS IT --------
+@28
+ecc_demo_tb.core_loads_word
+@24
+ecc_demo_tb.core_receives[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

@@ -158,5 +158,16 @@ ecc-test: | $(BUILD)
 >    rtl/ecc/secded_enc.sv tb/unit/secded_enc_tb.sv
 >vvp -n $(BUILD)/ecc.vvp
 
+# ------------------------------------------------------------- ECC live demo
+# make ecc-demo FLIPS=0|1|2   (bubble_sort with bits flipped in data memory)
+FLIPS ?= 1
+ecc-demo: $(BUILD)/bubble_sort.mem
+>$(IVERILOG) -o $(BUILD)/ecc_demo.vvp -s ecc_demo_tb $(RTL) tb/system/ecc_demo_tb.sv
+>vvp -n $(BUILD)/ecc_demo.vvp +FLIPS=$(FLIPS)
+
+# same demo, then open the waveform in GTKWave with the signals laid out
+ecc-wave: ecc-demo
+>gtkwave $(BUILD)/ecc_demo.vcd tb/system/ecc_demo.gtkw
+
 clean:
 >rm -rf $(BUILD) cpu_top_tb.vcd

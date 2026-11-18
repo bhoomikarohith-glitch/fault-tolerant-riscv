@@ -65,7 +65,7 @@ int main(void)
     }
 
     factorial_result = factorial(6);
-    return (int)(checksum + factorial_result);
+    return (int)(multiply_matrices);
 }
 
 #if defined(__clang__)

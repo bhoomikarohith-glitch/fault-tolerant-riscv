@@ -83,4 +83,22 @@ module tb_c_program;
                 else $fatal(1, "C program timed out at PC %h", pc);
         end
     end
+
+int printed = 0;
+
+always @(posedge clk) begin
+    if (reset) begin
+        printed = 0;
+    end
+    else if (memwrite && dataadr == 32'h00000FF8) begin
+        if (printed == 0)
+            $display("Result matrix (3 x 3):");
+
+        $write("%0d ", writedata);
+        printed++;
+
+        if (printed % 3 == 0)
+            $write("\n");
+    end
+end
 endmodule

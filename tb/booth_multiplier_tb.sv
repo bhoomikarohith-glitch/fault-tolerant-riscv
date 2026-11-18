@@ -1,4 +1,4 @@
-make sim VCD=1`timescale 1ns/1ps
+`timescale 1ns/1ps
 
 // ==============================================================================
 // 1. TRANSACTION INTERFACE (Sequence Item)
@@ -172,6 +172,13 @@ endinterface
 // 7. ENVIRONMENT WRAPPER AND TOP MODULE CONTAINER
 // ==============================================================================
 module tb_booth_multiplier_oop;
+
+    initial begin
+        $dumpfile("build/mul/booth_multiplier.vcd");
+        $dumpvars(0, tb_booth_multiplier_oop);
+    end
+
+  
 
     // Generate physical clock network
     logic clk;
